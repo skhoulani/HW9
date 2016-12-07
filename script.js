@@ -21,27 +21,46 @@ $(document).ready(function() {
     var board; // board length of 15;
     var score = 0;
     //creating the default new game environment
-    dealHand();
+    dealHand(7);
     $("#scoreArea").html("Score: "+ score);
 
-    function dealHand() {
+    function dealHand(n) {
         //splice or split whatev
         var randFreq;
         var i;
 
-        for (i = 0; i < 7; i++) {
+        for (i = 0; i < n; i++) {
+            if(freq.length)
             randFreq = Math.floor(Math.random()*freq.length);
             $("#hand").append("<div id='hand"+ i +"' class = 'tiles'>"+ freq[randFreq] +"<div id='hand"+ i +"val' class='tileval'>"+ val[freq[randFreq]]+"</div>");
             $("#hand" + i).draggable({snap: "#board img, #hand", containment:"#screen"});
             freq.splice(randFreq,1);
-        }
 
+        }
     }
+
+    $(".boardPiece").droppable({
+        drop: function( event, ui ) {
+            //console.log($(this));
+            //console.log(parseInt(($(ui.draggable).text()).match(/\d+/g))); //using regular expression to get the string of the tile's value, and then converting it to an int
+            score += parseInt(($(ui.draggable).text()).match(/\d+/g)); //using regular expression to get the string of the tile's value, and then converting it to an int
+        }
+    })
 
     $("#resetButton").on("click", function (e) {
         freq = ["A","A","A","A","A","A","A","A","A","B","B","C","C","D","D","D","D","E","E","E","E","E","E","E","E","E","E","E","E","F","F","G","G","G","H","H","I","I","I","I","I","I","I","I","I","J","K","L","L","L","L","M","M","N","N","N","N","N","N","O","O","O","O","O","O","O","O","P","P","Q","R","R","R","R","R","R","S","S","S","S","T","T","T","T","T","T","U","U","U","U","V","V","W","W","X","Y","Y","Z"," "," "];
         $("#hand").html("");
-        dealHand();
+        dealHand(7);
+        resetScore();
+    });
+
+    $("#endButton").on("click", function (e) {
+        var numTilesDealt = 7;
+        var newScore = score +
+        $("#hand").html("");
+        if(freq.length < 7) //If the tile bag has less than 7 tiles, the amount left will be dealt
+            numTilesDealt = freq.length;
+        dealHand(numTilesDealt);
         resetScore();
     });
 
@@ -49,6 +68,7 @@ $(document).ready(function() {
         $("#scoreArea").html("Score: "+ score);
 
     }
+
     //grid: [80,80],
     //$("#hand").append("<div id='hand0' class = 'tiles'>A<div id='hand0val' class='tileval'>3</div>");
     //$("#hand0").draggable({snap: "#board img, #hand", containment:"#screen"});
