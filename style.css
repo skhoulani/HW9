@@ -28,6 +28,14 @@ body {
 
 }
 
+#warning {
+	height: 40px;
+	text-align: center;
+	color: white;
+	font-size: 30px;
+	text-shadow: 2px 2px 1px grey;
+}
+
 #resetButton {
 	float: left;
 }
@@ -83,7 +91,7 @@ body {
 
 #board {
 	padding-top: 50px;
-	padding-bottom: 100px;
+	margin-bottom: 50px;
 	text-align: center;
 }
 #hand {
